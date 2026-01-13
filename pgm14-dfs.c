@@ -1,67 +1,42 @@
-#include<stdio.h>
-int adj[10][10], stack[10], top = -1;
-int visited[10] = {0,0,0,0,0,0,0,0,0,0};
-void push(int item)
+#include <stdio.h>
+#include <stdlib.h>
+int graph[10][10];
+int visited[10];
+int n;
+void dfs(int v)
 {
-    if (top == 11)
-        printf("Stack is full\n");
-    else
+    int i;
+    printf("%d ",v);
+    visited[v] = 1;
+    for(i=1;i<=n;i++)
     {
-        top++;
-        stack[top] = item;
-    }
-}
-int pop()
-{
-    int p;
-    if (top == -1)
-        return 0;
-    else
-    {
-        p = stack[top];
-        top--;
-        return p;
-    }
-}
-void dfs(int s, int v)
-{
-    int p, i;
-    push(s);
-    visited[s] = 1;
-    p = pop();
-    if (p != 0)
-        printf("%d", p);
-    while (p != 0)
-    {
-        for (i = 1; i <= v; i++)
+        if(graph[v][i]==1&&visited[i]==0)
         {
-            if (adj[p][i] == 1 && visited[i] == 0)
-            {
-                push(i);
-                visited[i] = 1;
-            }
+            dfs(i);
         }
-        p = pop();
-        if (p != 0)
-            printf("%d", p);
     }
 }
 int main()
 {
-    int i, j, v, s;
-    printf("Enter the number of vertices: ");
-    scanf("%d", &v);
-    printf("Enter the adjacency matrix:\n");
-    for (i = 1; i <= v; i++)
+    int i,j,start;
+    printf("Enter number of vertices: ");
+    scanf("%d",&n);
+    printf("Enter adjacency matrix:\n");
+    for(i=1;i<=n;i++)
     {
-        for (j = 1; j <= v; j++)
+        for(j=1;j<=n;j++)
         {
-            scanf("%d", &adj[i][j]);
+            scanf("%d",&graph[i][j]);
+            
         }
     }
-    printf("Enter the starting vertex: ");
-    scanf("%d", &s);
-    dfs(s, v);
+    for(i=1;i<=n;i++)
+    {
+        visited[i] = 0;
+    }
+    printf("Enter starting vertex: ");
+    scanf("%d",&start);
+    printf("DFS Traversal: ");
+    dfs(start);
     return 0;
 }
-
